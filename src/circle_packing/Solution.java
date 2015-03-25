@@ -1,5 +1,7 @@
 package circle_packing;
 
+import util.MathUtil;
+
 import java.awt.geom.Point2D;
 import java.util.Arrays;
 
@@ -11,16 +13,23 @@ import java.util.Arrays;
 public class Solution {
 
 	//region Variables
-	private final double[] radii;
+	private final Circle[] circles;
 
-	public double[] getRadii() {
-		return radii;
+	/**
+	 * Returns the circle at the specified index
+	 * @param index	The index of the circle to return
+	 * @return	The circle at the given index
+	 */
+	public Circle getCircle(int index) {
+		return this.circles[index];
 	}
 
-	private final Point2D.Double[] positions;
-
-	public Point2D.Double[] getPositions() {
-		return positions;
+	/**
+	 * Returns the number of circles in this solution
+	 * @return	An integer specifying the amount of circles in this solution
+	 */
+	public int getCircleCount() {
+		return this.circles.length;
 	}
 
 	//endregion
@@ -35,25 +44,90 @@ public class Solution {
 	public Solution(double[] radii, Point2D.Double[] positions) {
 		if(radii.length != positions.length)
 			throw new IllegalArgumentException();
-		this.radii = radii;
-		this.positions = positions;
+		this.circles = new Circle[radii.length];
+		for(int i = 0; i < radii.length; i++)
+			circles[i] = new Circle(radii[i], positions[i]);
+	}
+
+	private Solution(Circle[] circles) {
+		this.circles = circles;
 	}
 
 	//endregion
 
 	//region Public methods
+
+	/**
+	 * Returns the positions of the circles in this solution
+	 * @return	An array of points
+	 */
+	public Point2D.Double[] getPositions() {
+		Point2D.Double[] array = new Point2D.Double[getCircleCount()];
+		for(int i = 0; i < getCircleCount(); i++)
+			array[i] = getCircle(i).getPosition();
+		return array;
+	}
+
 	/**
 	 * Clone this solution with the given positions
 	 * @param positions	The positions of the circles
 	 * @return	A clone of this current solution with different positions for the circles
 	 */
 	public Solution clone(Point2D.Double[] positions) {
-		return new Solution(this.radii, positions);
+		if(positions.length != getCircleCount())
+			throw new IllegalArgumentException("The number of positions does not correspond to the number of circles");
+		Circle[] circles = new Circle[getCircleCount()];
+		for(int i = 0; i < circles.length; i++)
+			circles[i] = getCircle(i).moveTo(positions[i]);
+		return new Solution(circles);
+	}
+
+	/**
+	 * Returns the furthest point that the circle at the given index can reach by moving towards the given position
+	 * @param index		The index of the circle to move
+	 * @param position	The position to move towards
+	 * @return	The furthest point in the direction of the destination that can be reached without colliding
+	 */
+	public Point2D.Double moveTowards(int index, Point2D.Double position) {
+		throw new UnsupportedOperationException(); // TODO
 	}
 
 	@Override
 	public String toString() {
-		return Arrays.toString(getRadii()) + ": " + Arrays.toString(getPositions());
+		return Arrays.toString(this.circles);
+	}
+
+	/**
+	 * Calculates the minimum radius to enclose all circles in this solution
+	 * @return	The minimal radius enclosing all circles
+	 */
+	public double minRadius() {
+		double minRadius = 0;
+		for(int i = 0; i < getCircleCount(); i++) {
+			double radius = getCircle(i).getDistanceToOrigin() + getCircle(i).getRadius();
+			if(radius > minRadius)
+				minRadius = radius;
+		}
+		return minRadius;
+	}
+
+	/**
+	 * Calculates whether or not the circles in this solution overlap
+	 * @return	True iff one or more circles overlap
+	 */
+	public boolean overlaps() {
+		for(int i = 0; i < getCircleCount(); i++)
+			for(int j = i + 1; j < getCircleCount(); j++)
+				if(getCircle(i).overlapsWith(getCircle(j)))
+					return true;
+		return false;
+	}
+
+	public double getCoverage() {
+		double solutionCoverage = 0;
+		for(int i = 0; i < getCircleCount(); i++)
+			solutionCoverage += MathUtil.getArea(getCircle(i).getRadius());
+		return solutionCoverage;
 	}
 
 	//endregion

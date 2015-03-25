@@ -33,7 +33,7 @@ public class ShiftMutation implements Heuristic<Solution> {
 
 	@Override
 	public void setDepthOfSearch(double depth) {
-		
+
 	}
 
 	@Override

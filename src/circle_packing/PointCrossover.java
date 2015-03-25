@@ -4,7 +4,6 @@ import AbstractClasses.ProblemDomain;
 import heuristic.Heuristic;
 
 import java.awt.geom.Point2D;
-import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -61,10 +60,10 @@ public class PointCrossover implements Heuristic<Solution> {
 
 	@Override
 	public Solution apply(Solution solution1, Solution solution2) {
-		if(solution1.getRadii().length != solution2.getRadii().length)
+		if(solution1.getCircleCount() != solution2.getCircleCount())
 			throw new IllegalArgumentException("Solutions are not of the same size");
-		int points = Math.min(this.points, solution1.getRadii().length - 1);
-		double blockSize = solution1.getRadii().length / (double) (points + 1);
+		int points = Math.min(this.points, solution1.getCircleCount() - 1);
+		double blockSize = solution1.getCircleCount() / (double) (points + 1);
 		Point2D.Double[] positions = new Point2D.Double[solution1.getPositions().length];
 		boolean one = true;
 		double sum = 0;
