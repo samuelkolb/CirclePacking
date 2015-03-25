@@ -1,6 +1,7 @@
 package circle_packing;
 
 import util.MathUtil;
+import util.Operation;
 
 import java.awt.geom.Point2D;
 import java.util.Arrays;
@@ -89,7 +90,19 @@ public class Solution {
 	 * @return	The furthest point in the direction of the destination that can be reached without colliding
 	 */
 	public Point2D.Double moveTowards(int index, Point2D.Double position) {
-		throw new UnsupportedOperationException(); // TODO
+		Circle circle = getCircle(index);
+		Point2D.Double line = Operation.subtract(position, circle.getPosition());
+		Point2D.Double destination = position;
+		for(int i = 0; i < getCircleCount(); i++) {
+			if(i == index)
+				continue;
+			Point2D.Double circleVector = Operation.subtract(getCircle(i).getPosition(), circle.getPosition());
+			Point2D.Double projection = Operation.project(circleVector, line);
+			double combinedRadius = getCircle(i).getRadius() + circle.getRadius();
+			if(MathUtil.distance(projection, circleVector) < combinedRadius) {
+
+			}
+		}
 	}
 
 	@Override
