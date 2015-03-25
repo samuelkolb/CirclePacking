@@ -92,7 +92,7 @@ public class Solution {
 	public Point2D.Double moveTowards(int index, Point2D.Double position) {
 		Circle circle = getCircle(index);
 		Point2D.Double line = Operation.subtract(position, circle.getPosition());
-		Point2D.Double destination = position;
+		Point2D.Double destination = line;
 		for(int i = 0; i < getCircleCount(); i++) {
 			if(i == index)
 				continue;
@@ -100,9 +100,15 @@ public class Solution {
 			Point2D.Double projection = Operation.project(circleVector, line);
 			double combinedRadius = getCircle(i).getRadius() + circle.getRadius();
 			if(MathUtil.distance(projection, circleVector) < combinedRadius) {
-
+                double x = getCircle(i).getPosition().getX() - projection.getX();
+                double y = getCircle(i).getPosition().getY() - projection.getY();
+                double l = Math.sqrt(Math.pow(combinedRadius, 2) - Math.pow(x, 2) - Math.pow(y, 2));
+                Point2D.Double t = Operation.scale(Operation.getUnit(projection), MathUtil.distance(projection) - l);
+                if(MathUtil.distance(t) < MathUtil.distance(destination))
+                    destination = t;
 			}
 		}
+        return Operation.add(destination, circle.getPosition());
 	}
 
 	@Override
