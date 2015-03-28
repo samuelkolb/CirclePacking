@@ -2,7 +2,6 @@ package circle_packing;
 
 import AbstractClasses.ProblemDomain;
 import heuristic.Heuristic;
-import util.MathUtil;
 import util.Operation;
 
 import java.awt.geom.Point2D;
@@ -13,7 +12,7 @@ import java.util.Random;
  *
  * @author Samuel Kolb
  */
-public class ShiftMutation implements Heuristic<Solution> {
+public class ShiftCenterMutation implements Heuristic<Solution> {
 
 	private double mutationIntensity = 0.1;
 
@@ -55,7 +54,7 @@ public class ShiftMutation implements Heuristic<Solution> {
 		for(int i = 0; i < solution.getCircleCount(); i++) {
 			if(random.nextDouble() < mutationIntensity) {
 				double distance = solution.minRadius() * maxShiftFactor * mutationIntensity * random.nextDouble();
-				Point2D.Double direction = new Point2D.Double(random.nextDouble() * 2 - 1, random.nextDouble() * 2 - 1);
+				Point2D.Double direction = Operation.getUnit(Operation.invert(solution.getCircle(i).getPosition()));
 				Point2D.Double destination = Operation.scale(direction, distance);
 				positions[i] = solution.moveTowards(i, destination);
 			} else {

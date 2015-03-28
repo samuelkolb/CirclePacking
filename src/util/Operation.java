@@ -10,6 +10,15 @@ import java.awt.geom.Point2D;
 public interface Operation {
 
 	/**
+	 * Inverts the given point (vector)
+	 * @param point The point to invert
+	 * @return  return.x == -point.x && return.y == -point.y
+	 */
+	public static Point2D.Double invert(Point2D.Double point) {
+		return new Point2D.Double(-point.x, -point.y);
+	}
+
+	/**
 	 * Subtract a point from another point
 	 * @param from	The point to subtract from
 	 * @param point	The point to subtract
