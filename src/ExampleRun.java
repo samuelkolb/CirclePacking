@@ -13,6 +13,7 @@ import be.kuleuven.kahosl.util.WriteInfo;
 import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
 import SAT.SAT;
+import circle_packing.CirclePacking;
 
 /**
  * This class show hows to run GIHH
@@ -22,7 +23,7 @@ public class ExampleRun {
 	public static void main(String[] args) {
 		
 		long seed = 123456789;
-		long totalExecutionTime = 20000;
+		long totalExecutionTime = 5000;
 		
 		SelectionMethodType selectionType = SelectionMethodType.AdaptiveLimitedLAassistedDHSMentorSTD;
 		AcceptanceCriterionType acceptanceType = AcceptanceCriterionType.AdaptiveIterationLimitedListBasedTA;
@@ -34,14 +35,14 @@ public class ExampleRun {
 		WriteInfo.resultSubFolderName = dateFormatter.format(today);
 
 		//create a ProblemDomain object with a seed for the random number generator
-		ProblemDomain problem = new SAT(seed);
+		ProblemDomain problem = new CirclePacking(seed);
 
 		//creates an HyperHeuristic object with a seed for the random number generator
 		HyperHeuristic hyper_heuristic_object = new GIHH(seed, problem.getNumberOfHeuristics(),totalExecutionTime,
 				                                               resultFileName, selectionType, acceptanceType);
 
 		//we must load an instance within the problem domain, in this case we choose instance 2
-		problem.loadInstance(2);
+		problem.loadInstance(0);
 		
 		//we must set the time limit for the hyper-heuristic in milliseconds
 		hyper_heuristic_object.setTimeLimit(totalExecutionTime);
@@ -56,5 +57,6 @@ public class ExampleRun {
 
 		//obtain the best solution found within the time limit
 		System.out.println("\n\n BEST SLN FOUND: "+hyper_heuristic_object.getBestSolutionValue());
+		System.out.println(problem.bestSolutionToString());
 	}
 }
