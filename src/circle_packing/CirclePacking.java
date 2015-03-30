@@ -24,11 +24,11 @@ public class CirclePacking extends ProblemDomain {
 		return objectiveFunction;
 	}
 
-	private final List<Heuristic<Solution>> heuristics = Arrays.asList(new PointCrossover(1), new UniformCrossover(),
+	private static final List<Heuristic<Solution>> heuristics = Arrays.asList(new PointCrossover(1), new UniformCrossover(),
 			new ShiftMutation(), new ShiftCenterMutation(), new SwapRepair());
 
 	private Heuristic<Solution> getHeuristic(int index) {
-		return this.heuristics.get(index);
+		return heuristics.get(index);
 	}
 
 	private final List<Instance<Solution>> instances;
@@ -108,7 +108,7 @@ public class CirclePacking extends ProblemDomain {
 
 	@Override
 	public int getNumberOfHeuristics() {
-		return this.heuristics.size();
+		return heuristics.size();
 	}
 
 	@Override
@@ -169,8 +169,8 @@ public class CirclePacking extends ProblemDomain {
 
 	private int[] getIds(Predicate<Heuristic> heuristicPredicate) {
 		List<Integer> idList = new ArrayList<>();
-		for(int i = 0; i < this.heuristics.size(); i++)
-			if(heuristicPredicate.test(this.heuristics.get(i)))
+		for(int i = 0; i < heuristics.size(); i++)
+			if(heuristicPredicate.test(heuristics.get(i)))
 				idList.add(i);
 		int[] ids = new int[idList.size()];
 		for(int i = 0; i < ids.length; i++)
