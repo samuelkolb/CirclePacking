@@ -1,13 +1,12 @@
 package circle_packing;
 
-import org.junit.Assert;
 import org.junit.Test;
-import util.MathUtil;
 
 import java.awt.geom.Point2D;
 
 import static org.junit.Assert.*;
-import static util.MathUtil.*;
+import static util.MathUtil.distance;
+import static util.MathUtil.getArea;
 
 public class SolutionTest {
 
@@ -17,6 +16,11 @@ public class SolutionTest {
 			new Point2D.Double(10, 0),
 			new Point2D.Double(0, 0),
 			new Point2D.Double(-10, 0)
+	});
+
+	private static final Solution touching = new Solution(new double[]{1, 1}, new Point2D.Double[]{
+			new Point2D.Double(1, 0),
+			new Point2D.Double(-1, 0)
 	});
 
 	private static final Solution overlapping = new Solution(new double[]{2, 2}, new Point2D.Double[]{
@@ -50,6 +54,7 @@ public class SolutionTest {
 	@Test
 	public void testOverlaps() throws Exception {
 		assertFalse(solution.overlaps());
+		assertFalse(touching.overlaps());
 		assertTrue(overlapping.overlaps());
 	}
 

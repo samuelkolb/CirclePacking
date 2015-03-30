@@ -24,7 +24,8 @@ public class CirclePacking extends ProblemDomain {
 		return objectiveFunction;
 	}
 
-	private final List<Heuristic<Solution>> heuristics;
+	private final List<Heuristic<Solution>> heuristics = Arrays.asList(new PointCrossover(1), new UniformCrossover(),
+			new ShiftMutation(), new ShiftCenterMutation(), new SwapRepair());
 
 	private Heuristic<Solution> getHeuristic(int index) {
 		return this.heuristics.get(index);
@@ -62,8 +63,6 @@ public class CirclePacking extends ProblemDomain {
 	public CirclePacking(long seed) {
 		super(seed);
 		this.objectiveFunction = solution -> getInstance().score(solution);
-		this.heuristics = Arrays.asList(new PointCrossover(1), new UniformCrossover(), new ShiftMutation(),
-				new ShiftCenterMutation());
 		this.instances = Arrays.asList(getLinearInstance(10));
 	}
 
@@ -109,7 +108,7 @@ public class CirclePacking extends ProblemDomain {
 
 	@Override
 	public int getNumberOfHeuristics() {
-		return 2;
+		return this.heuristics.size();
 	}
 
 	@Override

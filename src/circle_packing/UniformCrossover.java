@@ -56,7 +56,7 @@ public class UniformCrossover implements Heuristic<Solution> {
 		boolean one = false;
 		for(int i = 0; i < positions.length; i++)
 			positions[i] = (one = !one) ? solution1.getPositions()[i] : solution2.getPositions()[i];
-		return solution1.clone(positions);
+		return new InflateCompressMutation().apply(solution1.clone(positions));
 	}
 	/**
 	 * Provides a visual test of the heuristic

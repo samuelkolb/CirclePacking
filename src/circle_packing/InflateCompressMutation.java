@@ -42,7 +42,7 @@ public class InflateCompressMutation implements Heuristic<Solution> {
 
 	@Override
 	public Solution apply(Solution solution) {
-		return new PullToCenterHeuristic().apply(new BlowUpMutation().apply(solution));
+		return new CenterHeuristic().apply(new PullToCenterHeuristic().apply(new BlowUpMutation().apply(solution)));
 	}
 
 	@Override

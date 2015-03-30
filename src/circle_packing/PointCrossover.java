@@ -75,7 +75,7 @@ public class PointCrossover implements Heuristic<Solution> {
 				one = !one;
 			}
 		}
-		return solution1.clone(positions);
+		return new InflateCompressMutation().apply(solution1.clone(positions));
 	}
 
 	/**
