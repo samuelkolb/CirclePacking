@@ -40,7 +40,7 @@ public class InsertAdjacent implements Heuristic<Solution> {
         // find 2 adjacent circles, push circle in between
 
         Point2D.Double[] positions = new Point2D.Double[solution.getCircleCount()];
-        for(int i = 0; i < solution.getCircleCount(); i++) {
+        /*for(int i = 0; i < solution.getCircleCount(); i++) {
             Circle c = solution.getCircle(i);
             // Note: needed in class Circle: method Circle findNeighbour()
             // return circle to which the distance = this.radius + otherCircle.radius
@@ -56,7 +56,7 @@ public class InsertAdjacent implements Heuristic<Solution> {
                 c.moveTo(touch);
             }
             positions[i] = solution.getCircle(i).getPosition();
-        }
+        }*/
         return new InflateCompressMutation().apply(solution.clone(positions));
     }
 

@@ -38,7 +38,8 @@ public class CirclePacking extends ProblemDomain {
 			new ShiftCenterMutation(),
 			new SwapRepair(),
 			new CenterHeuristic(),
-			new HugCircleHeuristic());
+			new HugCircleHeuristic(),
+			new HugPairHeuristic());
 
 	private Heuristic<Solution> getHeuristic(int index) {
 		return heuristics.get(index);
@@ -196,8 +197,6 @@ public class CirclePacking extends ProblemDomain {
 	}
 
 	private double updateBest(int index) {
-		System.out.println("[CirclePacking] Update best");
-
 		double value = getFunctionValue(index);
 		if(value < this.bestSolutionValue) {
 			this.bestSolutionId = index;

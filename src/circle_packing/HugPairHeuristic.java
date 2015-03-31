@@ -11,7 +11,7 @@ import java.util.Random;
 /**
  * Created by anna on 31-Mar-15.
  */
-public class HugPair implements Heuristic<Solution> {
+public class HugPairHeuristic implements Heuristic<Solution> {
 
 
 	@Override
@@ -43,28 +43,30 @@ public class HugPair implements Heuristic<Solution> {
 	public Solution apply(Solution solution) {
 		Solution best = solution;
 		for (int c = 0; c < solution.getCircleCount(); c++) {
-			for (int k = c + 1; k < solution.getCircleCount(); k++) {
+			Circle moving = solution.getCircle(c);
+			for (int k = 0; k < solution.getCircleCount(); k++) {
+				if(k == c)
+					continue;
 				for (int j = k + 1; j < solution.getCircleCount(); j++) {
-					// Note: variables to shorten the MathUtil.intersections call
+					if(j == c)
+						continue;
+
 					Circle c1 = solution.getCircle(k);
-					double r1 = c1.getRadius();
-					Point2D p1 = c1.getPosition();
 					Circle c2 = solution.getCircle(j);
-					double r2 = c2.getRadius();
-					Point2D p2 = c2.getPosition();
-					List<Point2D> intersections = MathUtil.intersections(p1, r1, p2, r2);
-					if (intersections.size() != 0) {
-						for (Point2D i : intersections) {
-							Point2D newPos = solution.getCircle(c).moveTo(i).getPosition();
-							Solution clone = solution.clone(c, newPos);
-							if (clone.minRadius() < best.minRadius())
-								best = clone;
-						}
+
+					double r1 = c1.getRadius() + moving.getRadius();
+					double r2 = c2.getRadius() + moving.getRadius();
+					List<Point2D> intersections = MathUtil.intersections(c1.getPosition(), r1, c2.getPosition(), r2);
+
+					for (Point2D intersection : intersections) {
+						Point2D newPos = solution.getCircle(c).moveTo(intersection).getPosition();
+						Solution clone = solution.clone(c, newPos);
+						if (!clone.overlaps() && clone.minRadius() < best.minRadius())
+							best = clone;
 					}
 				}
 			}
 		}
-		// return best solution
 		return best;
 	}
 
