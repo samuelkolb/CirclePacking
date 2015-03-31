@@ -210,7 +210,8 @@ public class Solution {
 
 	@Override
 	public String toString() {
-		return Arrays.toString(this.circles);
+		return "Radius: " + minRadius() + ", density: " + getDensity() + " with " + getCircleCount() + " instances: "
+				+ Arrays.toString(this.circles);
 	}
 
 	/**
@@ -244,6 +245,11 @@ public class Solution {
 		for(int i = 0; i < getCircleCount(); i++)
 			solutionCoverage += MathUtil.getArea(getCircle(i).getRadius());
 		return solutionCoverage;
+	}
+
+	public double getDensity() {
+		double minRadius = minRadius();
+		return getCoverage() / MathUtil.getArea(minRadius);
 	}
 
 	//endregion

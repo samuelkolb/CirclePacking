@@ -61,7 +61,7 @@ public class HugPairHeuristic implements Heuristic<Solution> {
 					for (Point2D intersection : intersections) {
 						Point2D newPos = solution.getCircle(c).moveTo(intersection).getPosition();
 						Solution clone = solution.clone(c, newPos);
-						if (!clone.overlaps() && clone.minRadius() < best.minRadius())
+						if (!clone.overlaps() && clone.minRadius() <= best.minRadius())
 							best = clone;
 					}
 				}

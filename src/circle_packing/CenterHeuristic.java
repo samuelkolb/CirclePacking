@@ -47,7 +47,6 @@ public class CenterHeuristic implements Heuristic<Solution> {
 
 	@Override
 	public Solution apply(Solution solution) {
-		System.out.println("[CenterHeuristic] Center");
 		double maxX = Double.NEGATIVE_INFINITY, maxY = Double.NEGATIVE_INFINITY;
 		double minX = Double.POSITIVE_INFINITY, minY = Double.POSITIVE_INFINITY;
 		for(int i = 0; i < solution.getCircleCount(); i++) {

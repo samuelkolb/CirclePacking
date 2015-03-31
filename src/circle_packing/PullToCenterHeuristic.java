@@ -48,7 +48,6 @@ public class PullToCenterHeuristic implements Heuristic<Solution> {
 
 	@Override
 	public Solution apply(Solution solution) {
-		System.out.println("[PullToCenterHeuristic] Pull to center");
 		double DELTA = Math.pow(10, -15);
 		return solution.pullToCenter(STEP_SIZE, DELTA, MAX_STEPS);
 	}

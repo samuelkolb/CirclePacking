@@ -30,8 +30,9 @@ public class SolutionScreen extends JFrame {
 		Collage collage = new Collage(new Point2D.Double(minRadius * 2, minRadius * 2));
 		collage.addElement(new Point2D.Double(), new Circle(minRadius).color(Color.BLACK));
 		for(int i = 0; i < solution.getCircleCount(); i++) {
-			GeometricShape shape = new Circle(solution.getCircle(i).getRadius()).fill().color(Color.ORANGE);
-			collage.addElement(solution.getCircle(i).getPosition(), shape);
+			Circle circle = new Circle(solution.getCircle(i).getRadius());
+			collage.addElement(solution.getCircle(i).getPosition(), circle.fill().color(Color.ORANGE));
+			collage.addElement(solution.getCircle(i).getPosition(), circle.color(Color.BLACK));
 		}
 		collage.setPreferredSize(new Dimension(SIZE, SIZE));
 		getContentPane().removeAll();

@@ -39,7 +39,8 @@ public class CirclePacking extends ProblemDomain {
 			new SwapRepair(),
 			new CenterHeuristic(),
 			new HugCircleHeuristic(),
-			new HugPairHeuristic());
+			new HugPairHeuristic(),
+			new MigrateHeuristic());
 
 	private Heuristic<Solution> getHeuristic(int index) {
 		return heuristics.get(index);
@@ -77,7 +78,10 @@ public class CirclePacking extends ProblemDomain {
 	public CirclePacking(long seed) {
 		super(seed);
 		this.objectiveFunction = solution -> getInstance().score(solution);
-		this.instances = Arrays.asList(getLinearInstance(10));
+		this.instances = new ArrayList<>();
+		for(int i = 5; i <= 100; i++)
+			this.instances.add(getLinearInstance(i));
+		this.instances.add(getLinearInstance(200));
 		for(Heuristic<Solution> heuristic : heuristics)
 			heuristic.setRandom(rng);
 	}
@@ -119,7 +123,10 @@ public class CirclePacking extends ProblemDomain {
 	@Override
 	public void initialiseSolution(int position) {
 		setSolution(position, getInstance().getInstance(rng));
-		updateBest(position);
+		if(position == this.bestSolutionId)
+			findBest();
+		else
+			updateBest(position);
 	}
 
 	@Override
@@ -129,23 +136,25 @@ public class CirclePacking extends ProblemDomain {
 
 	@Override
 	public double applyHeuristic(int heuristicId, int sourceIndex, int resultIndex) {
-		System.out.println("[CirclePacking] Apply " + getHeuristic(heuristicId).getClass().getName());
+		System.out.println("[CirclePacking] Apply " + getHeuristic(heuristicId).getClass().getSimpleName());
 		Solution solution = getHeuristic(heuristicId).apply(getSolution(sourceIndex));
 		setSolution(resultIndex, solution);
-		return updateBest(resultIndex);
+		return resultIndex == this.bestSolutionId ? findBest() : updateBest(resultIndex);
 	}
 
 	@Override
 	public double applyHeuristic(int heuristicId, int sourceIndex1, int sourceIndex2, int resultIndex) {
-		System.out.println("[CirclePacking] Apply " + getHeuristic(heuristicId).getClass().getName());
+		System.out.println("[CirclePacking] Apply " + getHeuristic(heuristicId).getClass().getSimpleName());
 		Solution solution = getHeuristic(heuristicId).apply(getSolution(sourceIndex1), getSolution(sourceIndex2));
 		setSolution(resultIndex, solution);
-		return updateBest(resultIndex);
+		return resultIndex == this.bestSolutionId ? findBest() : updateBest(resultIndex);
 	}
 
 	@Override
 	public void copySolution(int sourceIndex, int resultIndex) {
 		setSolution(resultIndex, getSolution(sourceIndex));
+		if(resultIndex == this.bestSolutionId)
+			findBest();
 	}
 
 	@Override
@@ -204,5 +213,23 @@ public class CirclePacking extends ProblemDomain {
 			getScreen().showSolution(getSolution(index));
 		}
 		return value;
+	}
+
+	private double findBest() {
+		double best = Double.POSITIVE_INFINITY;
+		int index = -1;
+		for(int i = 0; i < this.solutions.length; i++) {
+			if(getSolution(i) == null)
+				continue;
+			double score = getFunctionValue(i);
+			if(score < best) {
+				best = score;
+				index = i;
+			}
+		}
+		this.bestSolutionValue = best;
+		this.bestSolutionId = index;
+		getScreen().showSolution(getSolution(index));
+		return best;
 	}
 }
