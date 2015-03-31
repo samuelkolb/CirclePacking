@@ -37,7 +37,7 @@ public class FixedRadiiInstance implements Instance<Solution> {
 		Point2D.Double[] positions = new Point2D.Double[this.radii.length];
 		for(int i = 0; i < this.radii.length; i++)
 			positions[i] = new Point2D.Double(random.nextDouble(), random.nextDouble());
-		return new PullToCenterHeuristic().apply(new BlowUpMutation().apply(new Solution(this.radii, positions)));
+		return new InflateCompressMutation().apply(new Solution(this.radii, positions));
 	}
 
 	@Override

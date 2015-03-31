@@ -2,6 +2,7 @@
     Adapted from ExampleRun1.java (chesc.jar @ http://www.asap.cs.nott.ac.uk/external/chesc2011/hyflex_download.html)
 */
 
+import java.io.PrintStream;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,12 +23,11 @@ public class ExampleRun {
 	
 	public static void main(String[] args) {
 		
-		long seed = 123456789;
-		long totalExecutionTime = 5000;
+		long seed = 8369232;
+		long totalExecutionTime = 60000;
 		
 		SelectionMethodType selectionType = SelectionMethodType.AdaptiveLimitedLAassistedDHSMentorSTD;
 		AcceptanceCriterionType acceptanceType = AcceptanceCriterionType.AdaptiveIterationLimitedListBasedTA;
-		
 		String resultFileName = "GIHH_";
 		
 		Date today = new Date();

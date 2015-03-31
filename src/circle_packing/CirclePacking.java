@@ -1,6 +1,7 @@
 package circle_packing;
 
 import AbstractClasses.ProblemDomain;
+import gui.SolutionScreen;
 import heuristic.Heuristic;
 import heuristic.Instance;
 import heuristic.ObjectiveFunction;
@@ -18,14 +19,26 @@ import java.util.function.Predicate;
 public class CirclePacking extends ProblemDomain {
 
 	//region Variables
+	private final SolutionScreen screen = new SolutionScreen();
+
+	public SolutionScreen getScreen() {
+		return screen;
+	}
+
 	private final ObjectiveFunction<Solution> objectiveFunction;
 
 	private ObjectiveFunction<Solution> getObjectiveFunction() {
 		return objectiveFunction;
 	}
 
-	private static final List<Heuristic<Solution>> heuristics = Arrays.asList(new PointCrossover(1), new UniformCrossover(),
-			new ShiftMutation(), new ShiftCenterMutation(), new SwapRepair());
+	private static final List<Heuristic<Solution>> heuristics = Arrays.asList(
+			new PointCrossover(1),
+			new UniformCrossover(),
+			new ShiftMutation(),
+			new ShiftCenterMutation(),
+			new SwapRepair(),
+			new CenterHeuristic(),
+			new HugCircleHeuristic());
 
 	private Heuristic<Solution> getHeuristic(int index) {
 		return heuristics.get(index);
@@ -64,9 +77,11 @@ public class CirclePacking extends ProblemDomain {
 		super(seed);
 		this.objectiveFunction = solution -> getInstance().score(solution);
 		this.instances = Arrays.asList(getLinearInstance(10));
+		for(Heuristic<Solution> heuristic : heuristics)
+			heuristic.setRandom(rng);
 	}
 
-	private static Instance<Solution> getLinearInstance(int size) {
+	public static Instance<Solution> getLinearInstance(int size) {
 		double[] radii = new double[size];
 		for(int i = 0; i < size; i++)
 			radii[i] = i + 1;
@@ -113,6 +128,7 @@ public class CirclePacking extends ProblemDomain {
 
 	@Override
 	public double applyHeuristic(int heuristicId, int sourceIndex, int resultIndex) {
+		System.out.println("[CirclePacking] Apply " + getHeuristic(heuristicId).getClass().getName());
 		Solution solution = getHeuristic(heuristicId).apply(getSolution(sourceIndex));
 		setSolution(resultIndex, solution);
 		return updateBest(resultIndex);
@@ -120,6 +136,7 @@ public class CirclePacking extends ProblemDomain {
 
 	@Override
 	public double applyHeuristic(int heuristicId, int sourceIndex1, int sourceIndex2, int resultIndex) {
+		System.out.println("[CirclePacking] Apply " + getHeuristic(heuristicId).getClass().getName());
 		Solution solution = getHeuristic(heuristicId).apply(getSolution(sourceIndex1), getSolution(sourceIndex2));
 		setSolution(resultIndex, solution);
 		return updateBest(resultIndex);
@@ -179,10 +196,13 @@ public class CirclePacking extends ProblemDomain {
 	}
 
 	private double updateBest(int index) {
+		System.out.println("[CirclePacking] Update best");
+
 		double value = getFunctionValue(index);
 		if(value < this.bestSolutionValue) {
 			this.bestSolutionId = index;
 			this.bestSolutionValue = value;
+			getScreen().showSolution(getSolution(index));
 		}
 		return value;
 	}

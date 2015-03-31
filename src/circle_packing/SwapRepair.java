@@ -50,11 +50,11 @@ public class SwapRepair implements Heuristic<Solution> {
 	@Override
 	public Solution apply(Solution solution) {
 		// NOTE: also switches circles with the same radius
-		Point2D.Double[] positions = solution.getPositions();
+		Point2D[] positions = solution.getPositions();
 		for(int i = 0; i < solution.getCircleCount(); i++)
 			for(int j = i + 1; j < solution.getCircleCount(); j++)
 				if(random.nextDouble() < mutationIntensity) {
-					Point2D.Double temp = positions[i];
+					Point2D temp = positions[i];
 					positions[i] = positions[j];
 					positions[j] = temp;
 				}

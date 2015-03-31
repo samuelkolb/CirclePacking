@@ -52,7 +52,7 @@ public class UniformCrossover implements Heuristic<Solution> {
 	public Solution apply(Solution solution1, Solution solution2) {
 		if(solution1.getCircleCount() != solution2.getCircleCount())
 			throw new IllegalArgumentException("Solutions are not of the same size");
-		Point2D.Double[] positions = new Point2D.Double[solution1.getPositions().length];
+		Point2D[] positions = new Point2D[solution1.getPositions().length];
 		boolean one = false;
 		for(int i = 0; i < positions.length; i++)
 			positions[i] = (one = !one) ? solution1.getPositions()[i] : solution2.getPositions()[i];

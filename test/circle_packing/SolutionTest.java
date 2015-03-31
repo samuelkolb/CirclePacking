@@ -42,7 +42,21 @@ public class SolutionTest {
 
 	@Test
 	public void testMoveTowards() throws Exception {
-		// TODO
+		Point2D.Double origin = new Point2D.Double(0, 0);
+		Point2D.Double moved = solution.moveTowards(0, origin);
+		assertEquals(1.5 + 1, moved.getX(), DELTA);
+		assertEquals(0, moved.getY(), DELTA);
+	}
+
+	@Test
+	public void testJumpTowards() throws Exception {
+		double[] radii = new double[]{1, 1, 1, 1};
+		Point2D[] positions = new Point2D[]{new Point2D.Double(0, 0), new Point2D.Double(2.5, 0),
+				new Point2D.Double(6.5, 0), new Point2D.Double(10, 0)};
+		Solution solution = new Solution(radii, positions);
+		Point2D moved = solution.jumpTowards(3, new Point2D.Double());
+		assertEquals(4.5, moved.getX(), DELTA);
+		assertEquals(0, moved.getY(), DELTA);
 	}
 
 	@Test

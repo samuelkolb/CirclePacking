@@ -2,19 +2,15 @@ package circle_packing;
 
 import AbstractClasses.ProblemDomain;
 import heuristic.Heuristic;
-import util.Operation;
 
-import java.awt.geom.Point2D;
-import java.util.Arrays;
 import java.util.Random;
 
 /**
- * Created by samuelkolb on 29/03/15.
+ * Created by samuelkolb on 31/03/15.
+ *
+ * @author Samuel Kolb
  */
-public class PullToCenterHeuristic implements Heuristic<Solution> {
-
-	private static final double STEP_SIZE = 0.05;
-	private static final int MAX_STEPS = 3000;
+public class HugCircleHeuristic implements Heuristic<Solution> {
 
 	@Override
 	public void setRandom(Random random) {
@@ -23,7 +19,7 @@ public class PullToCenterHeuristic implements Heuristic<Solution> {
 
 	@Override
 	public ProblemDomain.HeuristicType getType() {
-		return ProblemDomain.HeuristicType.MUTATION;
+		return ProblemDomain.HeuristicType.LOCAL_SEARCH;
 	}
 
 	@Override
@@ -33,7 +29,6 @@ public class PullToCenterHeuristic implements Heuristic<Solution> {
 
 	@Override
 	public void setDepthOfSearch(double depth) {
-
 	}
 
 	@Override
@@ -48,9 +43,15 @@ public class PullToCenterHeuristic implements Heuristic<Solution> {
 
 	@Override
 	public Solution apply(Solution solution) {
-		System.out.println("[PullToCenterHeuristic] Pull to center");
-		double DELTA = Math.pow(10, -15);
-		return solution.pullToCenter(STEP_SIZE, DELTA, MAX_STEPS);
+		Solution best = solution;
+		for(int i = 0; i < solution.getCircleCount(); i++) {
+			for(int j = i + 1; j < solution.getCircleCount(); j++) {
+				Solution clone = solution.clone(i, solution.jumpTowards(i, solution.getCircle(j).getPosition()));
+				if(clone.minRadius() < best.minRadius())
+					best = clone;
+			}
+		}
+		return best;
 	}
 
 	@Override

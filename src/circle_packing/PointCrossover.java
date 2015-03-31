@@ -64,7 +64,7 @@ public class PointCrossover implements Heuristic<Solution> {
 			throw new IllegalArgumentException("Solutions are not of the same size");
 		int points = Math.min(this.points, solution1.getCircleCount() - 1);
 		double blockSize = solution1.getCircleCount() / (double) (points + 1);
-		Point2D.Double[] positions = new Point2D.Double[solution1.getPositions().length];
+		Point2D[] positions = new Point2D[solution1.getPositions().length];
 		boolean one = true;
 		double sum = 0;
 		for(int i = 0; i < positions.length; i++) {

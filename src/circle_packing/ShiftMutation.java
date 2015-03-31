@@ -17,7 +17,7 @@ public class ShiftMutation implements Heuristic<Solution> {
 
 	private double mutationIntensity = 0.1;
 
-	public final double maxShiftFactor = 0.7;
+	public final double maxShiftFactor = 3;
 
 	private Random random;
 
@@ -51,13 +51,13 @@ public class ShiftMutation implements Heuristic<Solution> {
 
 	@Override
 	public Solution apply(Solution solution) {
-		Point2D.Double[] positions = new Point2D.Double[solution.getCircleCount()];
+		Point2D[] positions = new Point2D[solution.getCircleCount()];
 		for(int i = 0; i < solution.getCircleCount(); i++) {
 			if(random.nextDouble() < mutationIntensity) {
-				double distance = solution.minRadius() * maxShiftFactor * mutationIntensity * random.nextDouble();
+				double distance = solution.minRadius() * maxShiftFactor * random.nextDouble();
 				Point2D.Double direction = new Point2D.Double(random.nextDouble() * 2 - 1, random.nextDouble() * 2 - 1);
 				Point2D.Double destination = Operation.scale(direction, distance);
-				positions[i] = solution.moveTowards(i, destination);
+				positions[i] = solution.jumpTowards(i, destination);
 			} else {
 				positions[i] = solution.getCircle(i).getPosition();
 			}

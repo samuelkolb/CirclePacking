@@ -44,6 +44,7 @@ public class BlowUpMutation implements Heuristic<Solution> {
 
 	@Override
 	public Solution apply(Solution solution) {
+		System.out.println("[BlowUpMutation] Blow up");
 		return solution.blowUp(STEP_SIZE);
 	}
 

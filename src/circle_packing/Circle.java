@@ -18,9 +18,9 @@ public class Circle {
 		return radius;
 	}
 
-	private final Point2D.Double position;
+	private final Point2D position;
 
-	public Point2D.Double getPosition() {
+	public Point2D getPosition() {
 		return position;
 	}
 
@@ -33,7 +33,7 @@ public class Circle {
 	 * @param radius	The radius of the circle
 	 * @param position	The position of the circle
 	 */
-	public Circle(double radius, Point2D.Double position) {
+	public Circle(double radius, Point2D position) {
 		if(radius < 0)
 			throw new IllegalArgumentException("Radius has to be positive");
 		this.radius = radius;
@@ -49,7 +49,7 @@ public class Circle {
 	 * @param position	The new position
 	 * @return	A circle with the same radius as this circle and the new position
 	 */
-	public Circle moveTo(Point2D.Double position) {
+	public Circle moveTo(Point2D position) {
 		return new Circle(getRadius(), position);
 	}
 
@@ -81,7 +81,7 @@ public class Circle {
 
 	@Override
 	public String toString() {
-		return "Circle at (" + getPosition().x + ", " + getPosition().y + ") with radius " + getRadius();
+		return "Circle at (" + getPosition().getX() + ", " + getPosition().getY() + ") with radius " + getRadius();
 	}
 
 	//endregion
