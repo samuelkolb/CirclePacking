@@ -84,7 +84,7 @@ public class ExampleRun {
 		std = Math.sqrt(std / runs.size());
 		System.out.println();
 		for(Solution solution : runs)
-			System.out.println(solution);
+			System.out.println(solution.getDensity());
 		System.out.println();
 		System.out.println("\nBest:\t\t" + best + "\nAverage:\t" + average + "\nStd:\t\t" + std);
 	}
