@@ -47,7 +47,7 @@ public class ExampleRun {
 			WriteInfo.resultSubFolderName = dateFormatter.format(new Date());
 
 			//create a ProblemDomain object with a seed for the random number generator
-			CirclePacking problem = new CirclePacking(seed);
+			CirclePacking problem = new CirclePacking(seed, false);
 
 			//creates an HyperHeuristic object with a seed for the random number generator
 			HyperHeuristic hyper_heuristic_object = new GIHH(seed, problem.getNumberOfHeuristics(), (long) EXECUTION_TIME,

@@ -19,7 +19,7 @@ import java.util.function.Predicate;
 public class CirclePacking extends ProblemDomain {
 
 	//region Variables
-	private final SolutionScreen screen = new SolutionScreen();
+	private final SolutionScreen screen;
 
 	public SolutionScreen getScreen() {
 		return screen;
@@ -75,7 +75,7 @@ public class CirclePacking extends ProblemDomain {
 	 * Creates a new circle packing domain with the given random seed
 	 * @param seed	The random seed used as source of randomness
 	 */
-	public CirclePacking(long seed) {
+	public CirclePacking(long seed, boolean visualize) {
 		super(seed);
 		this.objectiveFunction = solution -> getInstance().score(solution);
 		this.instances = new ArrayList<>();
@@ -87,6 +87,7 @@ public class CirclePacking extends ProblemDomain {
 			this.instances.add(getConstantInstance(i));
 		for(Heuristic<Solution> heuristic : heuristics)
 			heuristic.setRandom(rng);
+		this.screen = visualize ? new SolutionScreen() : null;
 	}
 
 	public static Instance<Solution> getLinearInstance(int size) {
@@ -231,9 +232,14 @@ public class CirclePacking extends ProblemDomain {
 		if(value < this.bestSolutionValue) {
 			this.bestSolutionId = index;
 			this.bestSolutionValue = value;
-			getScreen().showSolution(getSolution(index));
+			show(index);
 		}
 		return value;
+	}
+
+	private void show(int index) {
+		if(getScreen() != null)
+			getScreen().showSolution(getSolution(index));
 	}
 
 	private double findBest() {
@@ -250,7 +256,7 @@ public class CirclePacking extends ProblemDomain {
 		}
 		this.bestSolutionValue = best;
 		this.bestSolutionId = index;
-		getScreen().showSolution(getSolution(index));
+		show(index);
 		return best;
 	}
 }
