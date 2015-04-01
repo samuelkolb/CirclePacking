@@ -45,6 +45,12 @@ public class FixedRadiiInstance implements Instance<Solution> {
 	@Override
 	public double score(Solution solution) {
 		double density = solution.getDensity();
+		if(Double.isInfinite(density)) {
+			System.out.println(density);
+			System.out.println(solution);
+			System.out.println(solution.minRadius());
+			System.out.println(solution.getCoverage());
+		}
 		double overlapPenalty = 5;
 
 		return 1 - density + (solution.overlaps() ? overlapPenalty : 0);

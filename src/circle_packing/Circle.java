@@ -36,6 +36,8 @@ public class Circle {
 	public Circle(double radius, Point2D position) {
 		if(radius < 0)
 			throw new IllegalArgumentException("Radius has to be positive");
+		if(Double.isNaN(position.getX()) || Double.isNaN(position.getY()))
+			throw new IllegalArgumentException("Illegal position");
 		this.radius = radius;
 		this.position = position;
 	}

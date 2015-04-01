@@ -35,10 +35,10 @@ public class ExampleRun {
 		Format dateFormatter = new SimpleDateFormat("ddMMyyyyHHmmss");
 
 		List<Solution> runs = new ArrayList<>();
-		double best = Double.POSITIVE_INFINITY;
+		double best = Double.NEGATIVE_INFINITY;
 		double average = 0;
 
-		int numberRuns = 10;
+		int numberRuns = 8;
 
 		while(runs.size() < numberRuns) {
 
@@ -72,6 +72,8 @@ public class ExampleRun {
 				best = Math.max(best, problem.getBest().getDensity());
 				average += problem.getBest().getDensity() / numberRuns;
 				System.out.println(problem.bestSolutionToString());
+			} else {
+				System.out.println("Skipped");
 			}
 		}
 		System.out.println("\nBest: " + best + "\nAverage: " + average);

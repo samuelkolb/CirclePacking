@@ -2,6 +2,7 @@ package circle_packing;
 
 import AbstractClasses.ProblemDomain;
 import heuristic.Heuristic;
+import util.MathUtil;
 import util.Operation;
 
 import java.awt.geom.Point2D;
@@ -26,9 +27,11 @@ public class MigrateHeuristic implements Heuristic<Solution> {
 		return depth;
 	}
 
+	private Random random;
+
 	@Override
 	public void setRandom(Random random) {
-
+		this.random = random;
 	}
 
 	@Override
@@ -63,6 +66,8 @@ public class MigrateHeuristic implements Heuristic<Solution> {
 		while(steps++ < MAX_STEPS * getDepth()) {
 			Solution current = best;
 			for(int i = 0; i < solution.getCircleCount(); i++) {
+				if(MathUtil.distance(current.getCircle(i).getPosition()) == 0)
+					continue;
 				Point2D move = scale(getUnit(current.getCircle(i).getPosition()), STEP_SIZE);
 				Solution clone1 = current.clone(movePositions(current, move));
 				Solution clone2 = current.clone(movePositions(current, invert(move)));

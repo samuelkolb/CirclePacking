@@ -40,7 +40,8 @@ public class CirclePacking extends ProblemDomain {
 			new CenterHeuristic(),
 			new HugCircleHeuristic(),
 			new HugPairHeuristic(),
-			new MigrateHeuristic());
+			new MigrateHeuristic()
+	);
 
 	private Heuristic<Solution> getHeuristic(int index) {
 		return heuristics.get(index);
@@ -73,11 +74,15 @@ public class CirclePacking extends ProblemDomain {
 
 	/**
 	 * Creates a new circle packing domain with the given random seed
-	 * @param seed	The random seed used as source of randomness
+	 * @param seed		The random seed used as source of randomness
+	 * @param visualize	Whether to visualize the search or not
 	 */
 	public CirclePacking(long seed, boolean visualize) {
 		super(seed);
 		this.objectiveFunction = solution -> getInstance().score(solution);
+		new BlowUpMutation().setRandom(rng);
+		for(Heuristic<Solution> heuristic : heuristics)
+			heuristic.setRandom(rng);
 		this.instances = new ArrayList<>();
 		for(int i = 7; i <= 13; i++)
 			this.instances.add(getLinearInstance(i));
@@ -85,8 +90,6 @@ public class CirclePacking extends ProblemDomain {
 			this.instances.add(getSquareRootInstance(i));
 		for(int i = 7; i <= 13; i++)
 			this.instances.add(getConstantInstance(i));
-		for(Heuristic<Solution> heuristic : heuristics)
-			heuristic.setRandom(rng);
 		this.screen = visualize ? new SolutionScreen() : null;
 	}
 

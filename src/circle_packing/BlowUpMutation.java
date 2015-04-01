@@ -12,9 +12,11 @@ public class BlowUpMutation implements Heuristic<Solution> {
 
 	private static final double STEP_SIZE = 0.2;
 
+	private static Random random;
+
 	@Override
 	public void setRandom(Random random) {
-
+		BlowUpMutation.random = random;
 	}
 
 	@Override
@@ -44,7 +46,7 @@ public class BlowUpMutation implements Heuristic<Solution> {
 
 	@Override
 	public Solution apply(Solution solution) {
-		return solution.blowUp(STEP_SIZE);
+		return solution.blowUp(STEP_SIZE, random);
 	}
 
 	@Override

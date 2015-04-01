@@ -4,10 +4,7 @@ import util.MathUtil;
 import util.Operation;
 
 import java.awt.geom.Point2D;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static util.Operation.*;
 
@@ -104,14 +101,19 @@ public class Solution {
 	/**
 	 * Blows up the circles by moving them away from center until no circle overlaps with another circle
 	 * @param stepSize	The step size in which circles move circles away
+	 * @param random	A random generator to solve conflicts
 	 * @return	A clone of this solution in which circles have been moved away from the origin and do not overlap
 	 */
-	public Solution blowUp(double stepSize) {
+	public Solution blowUp(double stepSize, Random random) {
+		if(random == null)
+			throw new IllegalStateException();
 		Solution clone = clone(getPositions());
 		while(clone.overlaps()) {
 			double minRadius = clone.minRadius();
 			for(int i = 0; i < getCircleCount(); i++) {
 				Point2D oldPosition = clone.getCircle(i).getPosition();
+				if(MathUtil.distance(oldPosition) == 0)
+					oldPosition = new Point2D.Double(random.nextDouble(), random.nextDouble());
 				double factor = stepSize + MathUtil.distance(oldPosition) / minRadius * stepSize / 2;
 				Point2D.Double position = add(oldPosition, scale(getUnit(oldPosition), factor));
 				clone.circles[i] = new Circle(getCircle(i).getRadius(), position);
@@ -140,6 +142,9 @@ public class Solution {
 	public Solution clone(Point2D[] positions) {
 		if(positions.length != getCircleCount())
 			throw new IllegalArgumentException("The number of positions does not correspond to the number of circles");
+		for(Point2D position : positions)
+			if(Double.isNaN(position.getX()))
+				throw new IllegalArgumentException("Illegal position");
 		Circle[] circles = new Circle[getCircleCount()];
 		for(int i = 0; i < circles.length; i++)
 			circles[i] = getCircle(i).moveTo(positions[i]);
@@ -163,6 +168,8 @@ public class Solution {
 
 	private Point2D updateDestination(Circle circle, Circle other, Point2D destination) {
 		Point2D.Double circleVector = subtract(other.getPosition(), circle.getPosition());
+		if(MathUtil.distance(circleVector) == 0 || MathUtil.distance(destination) == 0)
+			return destination;
 		Point2D.Double projection = project(circleVector, destination);
 		double combinedRadius = other.getRadius() + circle.getRadius();
 		double distance = MathUtil.distance(projection, circleVector);
