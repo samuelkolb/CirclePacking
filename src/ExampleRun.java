@@ -73,9 +73,6 @@ public class ExampleRun {
 				average += problem.getBest().getDensity() / numberRuns;
 				System.out.println(problem.bestSolutionToString());
 			}
-
-			problem.getScreen().setVisible(false);
-			problem.getScreen().dispose();
 		}
 		System.out.println("\nBest: " + best + "\nAverage: " + average);
 	}
