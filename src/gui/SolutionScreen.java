@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  * Created by samuelkolb on 30/03/15.
@@ -55,18 +56,8 @@ public class SolutionScreen extends JFrame {
 	public static void main(String[] args) throws InterruptedException {
 		SolutionScreen solutionScreen = new SolutionScreen();
 
-		double[] radii = new double[]{1, 2, 3, 4};
-		Random random = new Random(1234);
-		Point2D.Double[] positions = new Point2D.Double[radii.length];
-		for(int i = 0; i < radii.length; i++)
-			positions[i] = new Point2D.Double(Math.cos(i * Math.PI * 2 / radii.length), Math.sin(i * Math.PI * 2 / radii.length));
-
-		Solution solution = new Solution(radii, positions);
-		solutionScreen.showSolution(solution);
-
-		Thread.sleep(2000);
-
-		Solution blownUp = new InflateCompressMutation().apply(solution);
-		solutionScreen.showSolution(blownUp);
+		String input = new Scanner(System.in).nextLine();
+		String circles = input.substring(input.indexOf("["));
+		System.out.println(circles);
 	}
 }

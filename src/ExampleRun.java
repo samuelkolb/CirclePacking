@@ -76,6 +76,16 @@ public class ExampleRun {
 				System.out.println("Skipped");
 			}
 		}
-		System.out.println("\nBest: " + best + "\nAverage: " + average);
+		double std = 0;
+		for(Solution solution : runs) {
+			double density = solution.getDensity();
+			std += (density - average) * (density - average);
+		}
+		std = Math.sqrt(std / runs.size());
+		System.out.println();
+		for(Solution solution : runs)
+			System.out.println(solution);
+		System.out.println();
+		System.out.println("\nBest:\t\t" + best + "\nAverage:\t" + average + "\nStd:\t\t" + std);
 	}
 }
