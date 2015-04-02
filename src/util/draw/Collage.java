@@ -8,6 +8,7 @@ import java.awt.font.OpenType;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * A collage is a fixed size container to which elements or shapes can be added.
@@ -51,6 +52,16 @@ public class Collage extends JPanel {
 		super.setSize(width, height);
 	}
 
+	private Optional<Color> backgroundColor = Optional.empty();
+
+	public Optional<Color> getBackgroundColor() {
+		return backgroundColor;
+	}
+
+	public void setBackgroundColor(Color color) {
+		this.backgroundColor = Optional.of(color);
+	}
+
 	/**
 	 * Creates a new collage with the given size
 	 * @param size	The size of the collage
@@ -62,6 +73,12 @@ public class Collage extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		Graphics2D graphics2D = (Graphics2D) g;
+		graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+		if(getBackgroundColor().isPresent()) {
+			graphics2D.setColor(getBackgroundColor().get());
+			graphics2D.fillRect(0, 0, getWidth(), getHeight());
+		}
 
 		double factor = getCollageSize().getX() / getCollageSize().getY() > getWidth() / getHeight()
 				? getWidth() / getCollageSize().getX()

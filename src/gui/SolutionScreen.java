@@ -2,14 +2,19 @@ package gui;
 
 import circle_packing.*;
 import util.draw.Collage;
-import util.draw.GeometricShape;
 import util.draw.shape.Circle;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.util.Random;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by samuelkolb on 30/03/15.
@@ -18,7 +23,7 @@ import java.util.Scanner;
  */
 public class SolutionScreen extends JFrame {
 
-	private static final int SIZE = 500;
+	private static final int SIZE = 800;
 
 	public SolutionScreen() {
 		super();
@@ -29,10 +34,12 @@ public class SolutionScreen extends JFrame {
 	public void showSolution(Solution solution) {
 		double minRadius = solution.minRadius();
 		Collage collage = new Collage(new Point2D.Double(minRadius * 2, minRadius * 2));
-		collage.addElement(new Point2D.Double(), new Circle(minRadius).color(Color.BLACK));
+		collage.setBackgroundColor(Color.LIGHT_GRAY);
+		collage.addElement(new Point2D.Double(), new Circle(minRadius).fill().color(Color.WHITE));
 		for(int i = 0; i < solution.getCircleCount(); i++) {
 			Circle circle = new Circle(solution.getCircle(i).getRadius());
-			collage.addElement(solution.getCircle(i).getPosition(), circle.fill().color(Color.ORANGE));
+			Color color = new Color(255, (int) (i/(double)solution.getCircleCount() * 150 + 100), 0);
+			collage.addElement(solution.getCircle(i).getPosition(), circle.fill().color(color));
 			collage.addElement(solution.getCircle(i).getPosition(), circle.color(Color.BLACK));
 		}
 		collage.setPreferredSize(new Dimension(SIZE, SIZE));
@@ -53,11 +60,14 @@ public class SolutionScreen extends JFrame {
 		pack();
 	}
 
-	public static void main(String[] args) throws InterruptedException {
-		SolutionScreen solutionScreen = new SolutionScreen();
+	public void print(File file) {
+		BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics g = image.createGraphics();
+		paint(g);
+		g.dispose();
+		try {
+			ImageIO.write(image, "png", file);
+		} catch (Exception ignored) {}
 
-		String input = new Scanner(System.in).nextLine();
-		String circles = input.substring(input.indexOf("["));
-		System.out.println(circles);
 	}
 }

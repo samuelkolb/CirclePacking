@@ -52,6 +52,14 @@ public class Solution {
 			circles[i] = new Circle(radii[i], positions[i]);
 	}
 
+	/**
+	 * Creates a new solution
+	 * @param circles	The list of circles
+	 */
+	public Solution(List<Circle> circles) {
+		this(circles.toArray(new Circle[circles.size()]));
+	}
+
 	private Solution(Circle[] circles) {
 		this.circles = circles;
 	}
