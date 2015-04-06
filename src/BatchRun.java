@@ -20,7 +20,7 @@ import circle_packing.Solution;
 /**
  * This class show hows to run GIHH
  */
-public class ExampleRun {
+public class BatchRun {
 
 	public static final int EXECUTION_TIME = 120000;
 
@@ -85,7 +85,6 @@ public class ExampleRun {
 		System.out.println();
 		for(Solution solution : runs)
 			System.out.println(solution.getDensity());
-		System.out.println();
 		System.out.println("\nBest:\t\t" + best + "\nAverage:\t" + average + "\nStd:\t\t" + std);
 	}
 }
