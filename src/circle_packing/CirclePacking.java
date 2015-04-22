@@ -190,6 +190,7 @@ public class CirclePacking extends ProblemDomain {
 
 	@Override
 	public String bestSolutionToString() {
+		show(this.bestSolutionId, true);
 		return this.bestSolutionValue < 0 ? "No best solution" : solutionToString(this.bestSolutionId);
 	}
 
@@ -235,14 +236,14 @@ public class CirclePacking extends ProblemDomain {
 		if(value < this.bestSolutionValue) {
 			this.bestSolutionId = index;
 			this.bestSolutionValue = value;
-			show(index);
+			show(index, false);
 		}
 		return value;
 	}
 
-	private void show(int index) {
+	private void show(int index, boolean done) {
 		if(getScreen() != null)
-			getScreen().showSolution(getSolution(index));
+			getScreen().showSolution(getSolution(index), done);
 	}
 
 	private double findBest() {
@@ -259,7 +260,7 @@ public class CirclePacking extends ProblemDomain {
 		}
 		this.bestSolutionValue = best;
 		this.bestSolutionId = index;
-		show(index);
+		show(index, false);
 		return best;
 	}
 }

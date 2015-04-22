@@ -17,7 +17,7 @@ import java.util.Scanner;
  */
 public class SingleRun {
 
-	public static final int EXECUTION_TIME = 120000;
+	public static final int EXECUTION_TIME = 60000;
 
 	public static void main(String[] args) {
 

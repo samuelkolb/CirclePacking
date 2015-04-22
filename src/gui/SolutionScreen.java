@@ -31,10 +31,10 @@ public class SolutionScreen extends JFrame {
 		createWindow();
 	}
 
-	public void showSolution(Solution solution) {
+	public void showSolution(Solution solution, boolean done) {
 		double minRadius = solution.minRadius();
 		Collage collage = new Collage(new Point2D.Double(minRadius * 2, minRadius * 2));
-		collage.setBackgroundColor(Color.LIGHT_GRAY);
+		collage.setBackgroundColor(done ? new Color(255, 220, 140) : Color.LIGHT_GRAY);
 		collage.addElement(new Point2D.Double(), new Circle(minRadius).fill().color(Color.WHITE));
 		for(int i = 0; i < solution.getCircleCount(); i++) {
 			Circle circle = new Circle(solution.getCircle(i).getRadius());
@@ -46,7 +46,7 @@ public class SolutionScreen extends JFrame {
 		getContentPane().removeAll();
 		getContentPane().add(collage);
 		pack();
-		repaint();
+		validate();
 	}
 
 	private void createWindow() {

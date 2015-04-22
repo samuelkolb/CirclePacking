@@ -29,7 +29,7 @@ public class DisplaySolution {
 			double x = Double.parseDouble(matcher.group(1)), y = Double.parseDouble(matcher.group(2));
 			circles.add(new circle_packing.Circle(radius, new Point2D.Double(x, y)));
 		}
-		solutionScreen.showSolution(new Solution(circles));
+		solutionScreen.showSolution(new Solution(circles), false);
 		String fileName = new Scanner(System.in).nextLine();
 		solutionScreen.print(new File(fileName + ".png"));
 	}
